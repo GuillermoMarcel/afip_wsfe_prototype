@@ -5,6 +5,17 @@
         End If
     End Sub
 
+    Private l As LoginClass
+    Private url As String = "https://wsaahomo.afip.gov.ar/ws/services/LoginCms"
+    Private Sub LoginBtn_Click(sender As Object, e As EventArgs) Handles LoginBtn.Click
+        l = New LoginClass(ServicioTX.Text, url, CertificadoTX.Text, ClaveTX.Text)
+        l.hacerLogin()
+        guardar_params()
+    End Sub
+
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        cargar_params()
+    End Sub
     Private Sub guardar_params()
         My.Settings.def_cert = CertificadoTX.Text
         My.Settings.def_pass = ClaveTX.Text
@@ -20,14 +31,6 @@
         ServicioTX.Text = My.Settings.def_serv
         url = My.Settings.def_url
     End Sub
-
-    Private l As LoginClass
-    Private Sub LoginBtn_Click(sender As Object, e As EventArgs) Handles LoginBtn.Click
-        l = New LoginClass(ServicioTX.Text, url, CertificadoTX.Text, ClaveTX.Text)
-        l.hacerLogin()
-        guardar_params()
-    End Sub
-
 
     Private Sub VerTokenBtn_Click(sender As Object, e As EventArgs) Handles VerTokenBtn.Click
         LargeText.mostrarMensaje(l.Token)
@@ -47,16 +50,10 @@
         LargeText.mostrarMensaje(l.XDocResponse.ToString)
     End Sub
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        cargar_params()
-    End Sub
-
     Private Sub WSFE_BTN_Click(sender As Object, e As EventArgs) Handles WSFE_BTN.Click
         FacturaForm.Login = l
         FacturaForm.Show()
     End Sub
-
-    Private url As String
 
     Private Sub testing_rb_CheckedChanged(sender As Object, e As EventArgs) Handles testing_rb.CheckedChanged
         url = "https://wsaahomo.afip.gov.ar/ws/services/LoginCms"
