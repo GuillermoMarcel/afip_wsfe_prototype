@@ -14,3 +14,21 @@ C:\Users\Guille\documents\visual studio 2017\Projects\PrototipoAfip\PrototipoAfi
 C:\Users\Guille\Documents\Visual Studio 2017\Projects\PrototipoAfip\PrototipoAfip\obj\Debug\PrototipoAfip.vbprojResolveAssemblyReference.cache
 C:\Users\Guille\Documents\Visual Studio 2017\Projects\PrototipoAfip\PrototipoAfip\bin\Debug\BarcodeLib.Barcode.WinForms.dll
 C:\Users\Guille\Documents\Visual Studio 2017\Projects\PrototipoAfip\PrototipoAfip\obj\Debug\PrototipoAfip.FacturaPrueba.resources
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\bin\Debug\Templates\LoginTemplate.xml
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\bin\Debug\PrototipoAfip.exe.config
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\bin\Debug\PrototipoAfip.exe
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\bin\Debug\PrototipoAfip.pdb
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\bin\Debug\PrototipoAfip.xml
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\bin\Debug\BarcodeLib.Barcode.WinForms.dll
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.vbprojResolveAssemblyReference.cache
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.FacturaForm.resources
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.FacturaPrueba.resources
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.Form1.resources
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.LargeText.resources
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.Resources.resources
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.vbproj.GenerateResource.Cache
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.exe
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.xml
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.pdb
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.vbproj.CoreCompileInputs.cache
+C:\Users\Guille\Source\Repos\afip_wsfe_prototype\PrototipoAfip\obj\Debug\PrototipoAfip.vbproj.CopyComplete

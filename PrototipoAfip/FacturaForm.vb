@@ -1,4 +1,5 @@
 ﻿Imports PrototipoAfip.WSFEHOMO
+
 Public Class FacturaForm
     Property Login As LoginClass
     Property TiposComprobantes As CbteTipoResponse
@@ -10,14 +11,15 @@ Public Class FacturaForm
     Property opcionales As OpcionalTipoResponse
     Property authRequest As FEAuthRequest
     Private url As String
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub CargaBtn_Click(sender As Object, e As EventArgs) Handles CargaBtn.Click
         Try
             authRequest = New FEAuthRequest()
             authRequest.Cuit = MyCuitTX.Text
             authRequest.Sign = Login.Sign
             authRequest.Token = Login.Token
 
-            Dim service As Service = getServicio()
+            Dim service As New WSFEHOMO.Service
+            service.Url = url
 
             service.ClientCertificates.Add(Login.certificado)
 
@@ -39,7 +41,8 @@ Public Class FacturaForm
             TiposIVA = service.FEParamGetTiposIva(authRequest)
             TipoIVACmb.DataSource = TiposIVA.ResultGet
 
-            NroCbteTX.Text = service.FECompUltimoAutorizado(authRequest, 4, TiposComprobantes.ResultGet(0).Id).CbteNro + 1
+            Dim lastCbteObj = service.FECompUltimoAutorizado(authRequest, 4, TiposComprobantes.ResultGet(0).Id)
+            NroCbteTX.Text = lastCbteObj.CbteNro + 1
 
             opcionales = service.FEParamGetTiposOpcional(authRequest)
         Catch ex As Exception
@@ -110,7 +113,8 @@ Public Class FacturaForm
         Try
             Dim service As WSFEHOMO.Service = getServicio()
             service.ClientCertificates.Add(Login.certificado)
-            Dim pv As Integer = Integer.Parse(InputBox("Pto Venta"))
+            Dim pvObj As PtoVenta = ptos_venta_cm.SelectedItem
+            Dim pv As Integer = pvObj.Nro
             Dim cm As CbteTipo = TiposComprobantesCMB.SelectedItem
 
             Dim req As New FECAERequest
@@ -174,10 +178,21 @@ Public Class FacturaForm
             m &= "Desde-Hasta: " & r.FeDetResp(0).CbteDesde & "-" & r.FeDetResp(0).CbteHasta
             m &= vbCrLf
 
-            For Each o In r.FeDetResp(0).Observaciones
-                m &= String.Format("Obs: {0} ({1})", o.Msg, o.Code) & vbCrLf
-            Next
-
+            If r.FeDetResp(0).Observaciones IsNot Nothing Then
+                For Each o In r.FeDetResp(0).Observaciones
+                    m &= String.Format("Obs: {0} ({1})", o.Msg, o.Code) & vbCrLf
+                Next
+            End If
+            If r.Errors IsNot Nothing Then
+                For Each er In r.Errors
+                    m &= String.Format("Er: {0}: {1}", er.Code, er.Msg) & vbCrLf
+                Next
+            End If
+            If r.Events IsNot Nothing Then
+                For Each ev In r.Events
+                    m &= String.Format("Ev: {0}: {1}", ev.Code, ev.Msg) & vbCrLf
+                Next
+            End If
             Resultado.Text = m
 
         Catch ex As Exception
@@ -189,7 +204,8 @@ Public Class FacturaForm
         Try
             Dim service As WSFEHOMO.Service = getServicio()
             service.ClientCertificates.Add(Login.certificado)
-            Dim pv As Integer = Integer.Parse(InputBox("Pto Venta"))
+            Dim pvObj As PtoVenta = ptos_venta_cm.SelectedItem
+            Dim pv As Integer = pvObj.Nro
             Dim cm As CbteTipo = TiposComprobantesCMB.SelectedItem
 
             Dim last As FERecuperaLastCbteResponse = service.FECompUltimoAutorizado(authRequest, pv, cm.Id)
@@ -200,9 +216,23 @@ Public Class FacturaForm
             consulta.PtoVta = last.PtoVta
 
             Dim asdf As FECompConsultaResponse = service.FECompConsultar(authRequest, consulta)
-            Dim r = asdf.ResultGet
+            mostrar(asdf)
 
-            Dim m As String = "Estado: " & r.Resultado & vbCrLf
+
+
+
+
+            MsgBox("El Ultimo fue: " & last.CbteNro.ToString)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub mostrar(asdf As FECompConsultaResponse)
+        Dim r = asdf.ResultGet
+        Dim m As String = ""
+        If r IsNot Nothing Then
+            m = "Estado: " & r.Resultado & vbCrLf
             m &= "CAE: " & r.CodAutorizacion
             m &= vbCrLf
             m &= "Vto: " & r.FchVto
@@ -216,11 +246,12 @@ Public Class FacturaForm
             m &= "Total: " & r.ImpTotal
             m &= vbCrLf
 
-            For Each o In r.Observaciones
-                m &= String.Format("Obs: {0} ({1})", o.Msg, o.Code) & vbCrLf
-            Next
+            If r.Observaciones IsNot Nothing Then
+                For Each o In r.Observaciones
+                    m &= String.Format("Obs: {0} ({1})", o.Msg, o.Code) & vbCrLf
+                Next
+            End If
 
-            Resultado.Text = m
 
 
             With LinearWinForm2
@@ -241,12 +272,21 @@ Public Class FacturaForm
                 .ImageFormat = Imaging.ImageFormat.Bmp
                 .drawBarcode(LinearWinForm2.CreateGraphics)
             End With
+        Else
+            m = "No hay ninguno anterior"
+        End If
 
-
-            MsgBox("El Ultimo fue: " & last.CbteNro.ToString)
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+        If asdf.Errors IsNot Nothing Then
+            For Each er In asdf.Errors
+                m &= vbCrLf & String.Format("Er: {0}: {1}", er.Code, er.Msg)
+            Next
+        End If
+        If asdf.Events IsNot Nothing Then
+            For Each ev In asdf.Events
+                m &= vbCrLf & String.Format("Ev: {0}: {1}", ev.Code, ev.Msg)
+            Next
+        End If
+        Resultado.Text = m
     End Sub
 
     Private Sub testing_rb_CheckedChanged(sender As Object, e As EventArgs) Handles testing_rb.CheckedChanged
@@ -270,5 +310,12 @@ Public Class FacturaForm
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         Dim p = String.Format("{0}\codigo.bmp", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))
         LinearWinForm2.SaveAsImage(p)
+    End Sub
+
+    Private Sub TiposComprobantesCMB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TiposComprobantesCMB.SelectedIndexChanged
+        Dim cm As CbteTipo = TiposComprobantesCMB.SelectedItem
+        Dim last = getServicio.FECompUltimoAutorizado(authRequest, 4, cm.Id)
+        Dim ultimo_nro As Integer = last.CbteNro
+        NroCbteTX.Text = ultimo_nro + 1
     End Sub
 End Class
